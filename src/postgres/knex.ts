@@ -1,6 +1,5 @@
 import _knex from "knex";
 import knexConfig from "#config/knex/knexfile.js";
-
 const knex = _knex(knexConfig);
 export default knex;
 

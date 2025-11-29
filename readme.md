@@ -18,6 +18,17 @@
 - src/config/env/env.ts
 - src/config/knex/knexfile.ts
 
+## Подготовка перед запуском:
+
+Для то, чтобы все корректно работало, перед запуском команды `docker compose up --build` необходимо сделать следующие шаги: 
+
+1) Указать полученный ключ от API Wildberries в файле `.env` в `WB_API_KEY`
+2) Получить доступы для Google Sheets API, вставить содержимое JSON файла Service Account Credentials file в `.env` в `GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING`
+3) Создать 3 таблицы и дать права редактора для Service account email
+4) Внести ID таблиц в `.env` в `GOOGLE_SHEETS_IDS` через запятую
+
+Все примеры отображения чувствительных данных можно посмотреть в example.env
+
 ## Команды:
 
 Запуск базы данных:

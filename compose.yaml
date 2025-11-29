@@ -58,9 +58,11 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      PORT: ${APP_PORT}
+      APP_PORT: ${APP_PORT}
+      WB_API_KEY: ${WB_API_KEY}
       NODE_ENV: production
-
+      GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING: ${GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING}
+      GOOGLE_SHEETS_IDS: ${GOOGLE_SHEETS_IDS}
     ports:
       - ${APP_PORT}:${APP_PORT}
 
@@ -78,3 +80,16 @@ services:
 
     command: [ "npm", "run", "start" ]
     restart: unless-stopped
+
+  cron:
+    build:
+      context: .
+      dockerfile: cron.Dockerfile
+    environment:
+      APP_PORT: ${APP_PORT}
+    networks:
+      - postgres-net
+    restart: unless-stopped
+    volumes:
+      - ./cron.log:/var/log/cron.log
+    init: true

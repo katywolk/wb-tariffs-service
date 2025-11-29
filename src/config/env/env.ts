@@ -1,5 +1,7 @@
 import dotenv from "dotenv";
 import { z } from "zod";
+import { GoogleKeyEnvVarSchema } from "#config/env/googlePrivateKeyFile.js";
+
 dotenv.config();
 
 const envSchema = z.object({
@@ -19,6 +21,12 @@ const envSchema = z.object({
             .regex(/^[0-9]+$/)
             .transform((value) => parseInt(value)),
     ]),
+    WB_API_KEY: z.string(),
+    GOOGLE_SHEETS_IDS: z
+        .string()
+        .min(1, "GOOGLE_SHEETS_IDS не должна быть пустой.")
+        .transform((str) => str.split(',').map(s => s.trim()).filter(s => s.length > 0)),
+    GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING: GoogleKeyEnvVarSchema,
 });
 
 const env = envSchema.parse({
@@ -29,6 +37,9 @@ const env = envSchema.parse({
     POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
     NODE_ENV: process.env.NODE_ENV,
     APP_PORT: process.env.APP_PORT,
+    WB_API_KEY: process.env.WB_API_KEY,
+    GOOGLE_SHEETS_IDS: process.env.GOOGLE_SHEETS_IDS,
+    GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING: process.env.GOOGLE_PRIVATE_KEY_FILE_AS_JSON_STRING,
 });
 
 export default env;
